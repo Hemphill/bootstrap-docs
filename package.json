@@ -84,7 +84,13 @@
     "js/*.js",
     "scss/**/*.scss",
     "Gruntfile.js",
-    "LICENSE"
+    "LICENSE",
+    "docs/getting-started",
+    "docs/layout",
+    "docs/content",
+    "docs/components",
+    "docs/about",
+    "docs/migration"
   ],
   "jspm": {
     "main": "js/bootstrap",
