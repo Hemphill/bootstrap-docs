@@ -90,7 +90,8 @@
     "docs/content",
     "docs/components",
     "docs/about",
-    "docs/migration.md"
+    "docs/migration.md",
+    "docs/assets"
   ],
   "jspm": {
     "main": "js/bootstrap",
