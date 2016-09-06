@@ -2,6 +2,16 @@
   browser: >
     Microsoft Edge
   summary: >
+    Dynamically generated `<label><input type="file"></label>` causes infinite loop of file dialogs.
+  upstream_bug: >
+    Edge#8282613
+  origin: >
+    Bootstrap#20335
+
+-
+  browser: >
+    Microsoft Edge
+  summary: >
     Native browser tooltip for `title` shows on first keyboard focus (in addition to custom tooltip component)
   upstream_bug: >
     Edge#6793560
@@ -80,6 +90,16 @@
 
 -
   browser: >
+    Microsoft Edge
+  summary: >
+    Active `position: fixed;` `<button>` flickers when scrolling
+  upstream_bug: >
+    Edge#8770398
+  origin: >
+    Bootstrap#20507
+
+-
+  browser: >
     Firefox
   summary: >
     `.table-bordered` with an empty `<tbody>` is missing borders.
@@ -137,6 +157,16 @@
     Mozilla#1282363
   origin: >
     Bootstrap#20161
+
+-
+  browser: >
+    Firefox
+  summary: >
+    `min-width: 0` has no effect on `<fieldset>`
+  upstream_bug: >
+    Mozilla#504622
+  origin: >
+    Bootstrap#12359
 
 -
   browser: >

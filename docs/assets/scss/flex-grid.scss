@@ -1,7 +1,4 @@
-// Bootstrap Grid only
-//
-// Includes relevant variables and mixins for the regular (non-flexbox) grid
-// system, as well as the generated predefined classes (e.g., `.col-4-sm`).
+// Bootstrap flexbox grid for our docs page
 
 
 //
@@ -11,6 +8,9 @@
 @import "custom";
 @import "variables";
 
+// Override for flexbox mode
+$enable-flex: true;
+
 //
 // Grid mixins
 //
@@ -19,5 +19,15 @@
 @import "mixins/breakpoints";
 @import "mixins/grid-framework";
 @import "mixins/grid";
+
+//
+// Utilities for flex alignment
+//
+
+@import "utilities/flex";
+
+//
+// Generate the grid class
+//
 
 @import "grid";
