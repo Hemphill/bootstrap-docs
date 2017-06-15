@@ -107,13 +107,7 @@
     ".scss-lint.yml",
     "scss/**/*.scss",
     "LICENSE",
-    "docs/getting-started",
-    "docs/layout",
-    "docs/content",
-    "docs/components",
-    "docs/about",
-    "docs/migration.md",
-    "docs/assets"
+    "docs/4.0"
   ],
   "jspm": {
     "main": "js/bootstrap",
