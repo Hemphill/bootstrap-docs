@@ -119,7 +119,8 @@
     ".scss-lint.yml",
     "scss/**/*.scss",
     "LICENSE",
-    "docs/4.0/*"
+    "docs/4.0/*",
+    "assets/scss"
   ],
   "jspm": {
     "registry": "npm",
