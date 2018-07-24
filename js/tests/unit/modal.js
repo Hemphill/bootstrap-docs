@@ -21,7 +21,8 @@ $(function () {
         document.body.removeChild(scrollDiv)
         return scrollbarWidth
       }
-      // Simulate scrollbars in PhantomJS
+
+      // Simulate scrollbars
       $('html').css('padding-right', '16px')
     },
     beforeEach: function () {
@@ -29,8 +30,11 @@ $(function () {
       $.fn.bootstrapModal = $.fn.modal.noConflict()
     },
     afterEach: function () {
+      $('.modal-backdrop, #modal-test').remove()
+      $(document.body).removeClass('modal-open')
       $.fn.modal = $.fn.bootstrapModal
       delete $.fn.bootstrapModal
+      $('#qunit-fixture').html('')
     }
   })
 
@@ -45,8 +49,7 @@ $(function () {
     $el.bootstrapModal()
     try {
       $el.bootstrapModal('noMethod')
-    }
-    catch (err) {
+    } catch (err) {
       assert.strictEqual(err.message, 'No method named "noMethod"')
     }
   })
@@ -211,7 +214,9 @@ $(function () {
       .on('shown.bs.modal', function () {
         assert.ok($('#modal-test').length, 'modal inserted into dom')
         assert.ok($('#modal-test').is(':visible'), 'modal visible')
-        $div.trigger($.Event('keydown', { which: 27 }))
+        $div.trigger($.Event('keydown', {
+          which: 27
+        }))
 
         setTimeout(function () {
           assert.ok(!$('#modal-test').is(':visible'), 'modal hidden')
@@ -231,7 +236,9 @@ $(function () {
       .on('shown.bs.modal', function () {
         assert.ok($('#modal-test').length, 'modal inserted into dom')
         assert.ok($('#modal-test').is(':visible'), 'modal visible')
-        $div.trigger($.Event('keyup', { which: 27 }))
+        $div.trigger($.Event('keyup', {
+          which: 27
+        }))
 
         setTimeout(function () {
           assert.ok($div.is(':visible'), 'modal still visible')
@@ -287,7 +294,7 @@ $(function () {
         $('#close').trigger('click')
       })
       .one('hidden.bs.modal', function () {
-        // after one open-close cycle
+        // After one open-close cycle
         assert.ok(!$('#modal-test').is(':visible'), 'modal hidden')
         $(this)
           .one('shown.bs.modal', function () {
@@ -414,8 +421,8 @@ $(function () {
     var originalPadding = $body.css('padding-right')
 
     // Hide scrollbars to prevent the body overflowing
-    $body.css('overflow', 'hidden')        // real scrollbar (for in-browser testing)
-    $('html').css('padding-right', '0px')  // simulated scrollbar (for PhantomJS)
+    $body.css('overflow', 'hidden')        // Real scrollbar (for in-browser testing)
+    $('html').css('padding-right', '0px')  // Simulated scrollbar (for PhantomJS)
 
     $('<div id="modal-test"/>')
       .on('shown.bs.modal', function () {
@@ -423,7 +430,7 @@ $(function () {
         assert.strictEqual(currentPadding, originalPadding, 'body padding should not be adjusted')
         $(this).bootstrapModal('hide')
 
-        // restore scrollbars
+        // Restore scrollbars
         $body.css('overflow', 'auto')
         $('html').css('padding-right', '16px')
         done()
@@ -510,48 +517,6 @@ $(function () {
       })
       .on('shown.bs.modal', function () {
         assert.strictEqual($element.data('margin-right'), originalPadding, 'original sticky element margin should be stored in data-margin-right')
-        $(this).bootstrapModal('hide')
-      })
-      .bootstrapModal('show')
-  })
-
-  QUnit.test('should adjust the inline margin of the navbar-toggler when opening and restore when closing', function (assert) {
-    assert.expect(2)
-    var done = assert.async()
-    var $element = $('<div class="navbar-toggler"></div>').appendTo('#qunit-fixture')
-    var originalMargin = $element.css('margin-right')
-
-    $('<div id="modal-test"/>')
-      .on('hidden.bs.modal', function () {
-        var currentMargin = $element.css('margin-right')
-        assert.strictEqual(currentMargin, originalMargin, 'navbar-toggler margin should be reset after closing')
-        $element.remove()
-        done()
-      })
-      .on('shown.bs.modal', function () {
-        var expectedMargin = parseFloat(originalMargin) + $(this).getScrollbarWidth() + 'px'
-        var currentMargin = $element.css('margin-right')
-        assert.strictEqual(currentMargin, expectedMargin, 'navbar-toggler margin should be adjusted while opening')
-        $(this).bootstrapModal('hide')
-      })
-      .bootstrapModal('show')
-  })
-
-  QUnit.test('should store the original margin of the navbar-toggler in data-margin-right before showing', function (assert) {
-    assert.expect(2)
-    var done = assert.async()
-    var $element = $('<div class="navbar-toggler"></div>').appendTo('#qunit-fixture')
-    var originalMargin = '0px'
-    $element.css('margin-right', originalMargin)
-
-    $('<div id="modal-test"/>')
-      .on('hidden.bs.modal', function () {
-        assert.strictEqual(typeof $element.data('margin-right'), 'undefined', 'data-margin-right should be cleared after closing')
-        $element.remove()
-        done()
-      })
-      .on('shown.bs.modal', function () {
-        assert.strictEqual($element.data('margin-right'), originalMargin, 'original navbar-toggler margin should be stored in data-margin-right')
         $(this).bootstrapModal('hide')
       })
       .bootstrapModal('show')
@@ -672,5 +637,21 @@ $(function () {
 
     $toggleBtn.trigger('click')
     setTimeout(done, 500)
+  })
+
+  QUnit.test('should not try to open a modal which is already visible', function (assert) {
+    assert.expect(1)
+    var done = assert.async()
+    var count = 0
+
+    $('<div id="modal-test"/>').on('shown.bs.modal', function () {
+      count++
+    }).on('hidden.bs.modal', function () {
+      assert.strictEqual(count, 1, 'show() runs only once')
+      done()
+    })
+      .bootstrapModal('show')
+      .bootstrapModal('show')
+      .bootstrapModal('hide')
   })
 })
